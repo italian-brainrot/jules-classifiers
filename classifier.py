@@ -9,7 +9,7 @@ import torch.nn.functional as F
 import utils
 
 
-class Classifier(ABC):
+class BaseClassifier(ABC):
     @abstractmethod
     def fit(self, data: pl.DataFrame, label: str, unlabeled_data: pl.DataFrame | None = None):
         # data[label] is guaranteed to be numeric, so utils.ToNumpy won't modify it.
@@ -24,7 +24,7 @@ class Classifier(ABC):
 
 
 # --------------------------------- examples --------------------------------- #
-class NearestCentroid(Classifier):
+class NearestCentroid(BaseClassifier):
     """Nearest centroid example"""
     def fit(self, data, label, unlabeled_data=None):
         self.num_cols_ = [col for col, dtype in data.schema.items() if dtype.is_numeric() and col != label]
@@ -101,7 +101,7 @@ class NearestCentroid(Classifier):
         probs = self.predict_proba(data)
         return np.array(self.classes_)[np.argmax(probs, axis=1)]
 
-class LabelPropagation(Classifier):
+class LabelPropagation(BaseClassifier):
     """semi-supervised example a sklearn estimator and unlabeled data"""
     def __init__(self, **kwargs):
         self.kwargs = kwargs
@@ -130,7 +130,7 @@ class LabelPropagation(Classifier):
         p = self.label_propagation_.predict_proba(X)
         return p
 
-class ImplicitMLP(Classifier):
+class ImplicitMLP(BaseClassifier):
     """pytorch example - optimize Solve(Wx+b, y)."""
     def __init__(self, adam_steps=500, maxiter=500, nonlinearity=F.tanh):
         self.adam_steps = adam_steps

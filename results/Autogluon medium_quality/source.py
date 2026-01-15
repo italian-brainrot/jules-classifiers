@@ -7,7 +7,7 @@ import classifier
 import utils
 
 
-class AutogluonTabular(classifier.Classifier):
+class AutogluonTabular(classifier.BaseClassifier):
     def fit(self, data, label, unlabeled_data=None):
         self.predictor_ = TabularPredictor(label, verbosity=0).fit(data.to_pandas(), presets="medium_quality")
         return self

@@ -8,7 +8,7 @@ import classifier
 import utils
 
 
-class SklearnEstimator(classifier.Classifier):
+class SklearnEstimator(classifier.BaseClassifier):
     """wrapper for estimators with sklearn-like APIs"""
     def __init__(self, estimator, scale=True, impute=True):
         self.estimator = estimator

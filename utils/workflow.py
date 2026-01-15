@@ -30,10 +30,10 @@ from sklearn.utils.multiclass import unique_labels
 from sklearn.utils.validation import check_is_fitted, validate_data  # type:ignore
 
 if TYPE_CHECKING:
-    from ..classifier import Classifier
+    from ..classifier import BaseClassifier
 
 def evaluate_classifier_on_dataset(
-    classifier_fn: "Callable[..., Classifier]",
+    classifier_fn: "Callable[..., BaseClassifier]",
     dataset: pl.DataFrame,
     label: str,
     n_folds=2,
@@ -137,7 +137,7 @@ def yield_datasets() -> Generator[tuple[str, pl.DataFrame, str]]:
 
     yield ("iris+useless features", load_iris_useless_features(), "y")
 
-def evaluate_classifier(classifier_fn: "Callable[..., Classifier]", ):
+def evaluate_classifier(classifier_fn: "Callable[..., BaseClassifier]", ):
     """Evaluates classifier on some datasets from OpenML-CC18 and returns metrics as dictionary ``{dataset_name: {metric: value}}``"""
 
     metrics: dict[str, dict[str, float]] = {}
@@ -174,7 +174,7 @@ def evaluate_classifier(classifier_fn: "Callable[..., Classifier]", ):
     return metrics
 
 
-def sanity_check(classifier_fn: "Callable[..., Classifier]"):
+def sanity_check(classifier_fn: "Callable[..., BaseClassifier]"):
     """Fits classifier to a very easy linearly-separable dataset prints some outputs."""
     # 8 points with 2 linearly-separable classes
     x1 = np.concatenate([np.linspace(0, 1, 100) + 1, np.linspace(0, 1, 100) - 1])
@@ -238,7 +238,7 @@ def sanity_check(classifier_fn: "Callable[..., Classifier]"):
 
 class SklearnAdapter(ClassifierMixin, BaseEstimator):
     """adapter to use Classifier as sklearn estimator."""
-    def __init__(self, classifier: "Classifier"):
+    def __init__(self, classifier: "BaseClassifier"):
         self.classifier = classifier
 
     def fit(self, X, y, X_unlabeled=None):
@@ -272,7 +272,7 @@ class SklearnAdapter(ClassifierMixin, BaseEstimator):
 cm_bright = mcolors.ListedColormap(["#FF0000", "#0000FF"])
 
 def plot_decision_boundary(
-    classifier: "Classifier",
+    classifier: "BaseClassifier",
     X: np.ndarray,
     y: np.ndarray,
     X_unlabeled: np.ndarray,
@@ -332,7 +332,7 @@ def periodic(n_points):
     y = ((X[:,0] % 1) > 0.5).astype(np.int64) + ((X[:,1] % 1) > 0.5).astype(np.int64)
     return X, y
 
-def save_visualizations(dir, classifier_fn: "Callable[..., Classifier]"):
+def save_visualizations(dir, classifier_fn: "Callable[..., BaseClassifier]"):
     """Generates and saves decision boundaries of classifier on some datasets"""
     def save(X,y,name,s,alpha):
         X, X_unlabeled = X[::2], X[1::2]
@@ -393,7 +393,7 @@ def load_metrics_to_frame():
     df = df.sort("avg_rank", descending=False).with_row_index("#", offset=1)
     return df
 
-def run_and_save(classifier_fn: "Callable[..., Classifier]", name: str, source:str):
+def run_and_save(classifier_fn: "Callable[..., BaseClassifier]", name: str, source:str):
     name = name.strip()
     if len(name) == 0:
         raise RuntimeError("Name is empty, please specify unique name of the classifier")

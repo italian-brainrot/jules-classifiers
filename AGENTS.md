@@ -2,10 +2,10 @@
 The goal is to develop a novel classification algorithm which should outperform existing algorithms.
 
 ## Implementing estimators
-Implement your estimator in `run.py`. It should have `fit`, `predict`, and, if applicable, `predict_proba` methods.
+The estimator should have `fit`, `predict`, and, if applicable, `predict_proba` methods.
 
 ```python
-class MyEstimator:
+class MyEstimator(BaseClassifier):
     def fit(self, data: pl.DataFrame, label: str, unlabeled_data: pl.DataFrame | None = None):
         # data[label] is the target, it has integer values from 0 to n_classes-1
         ...
@@ -46,13 +46,9 @@ See `classifier.py` for some examples.
 
 ## Workflow
 
-1. Implement your estimator in `run.py`.
+1. Make a copy of `run_template.py`, for example named `run.py`, and implement your estimator there.
 2. Run `python run.py "estimator name"`, where `"estimator name"` is unique name of your estimator for the leaderboard.
-3. The script ranks estimators on 8 datasets via balanced accuracy, uses average rank as the final score for the leaderboard, and prints the results. It also saves results of the run to `results/*estimator_name*` and copies source code to `results/*estimator_name*/source.py`.
+3. Iterate on your algorithm based on benchmark results.
+4. Please delete `run.py` after you are done with your experiments, so that the commit only contains new folder/folders in `results` directory and the updated `LEADERBOARD.md` file.
 
-After each run, `LEADERBOARD.md` is automatically updated with current top-100 estimators.
-
-## Other files
-
-- `run_template.py` used as initial contents for `run.py`, do not modify this file.
-- `utils/to_numpy.py`, `utils/workflow.py` - containts `ToNumpy` definition and utilities that handle scoring, saving and generating leaderboard. You generally shouldn't open them to save on context memory.
+The script ranks estimators on 8 datasets via balanced accuracy, uses average rank as the final score for the leaderboard, and prints the results. It also saves results of the run to `results/*estimator_name*` and copies source code to `results/*estimator_name*/source.py`. After each run, `LEADERBOARD.md` is automatically updated with current top-100 estimators.

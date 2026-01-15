@@ -12,7 +12,7 @@ import utils
 # inherit from classifier.Classifier, see classifier.py for some examples
 # You can work with polars dataframe directly, or use utils.ToNumpy to convert it to numpy arrays.
 # predict_proba method is optional.
-class MyClassifier(classifier.Classifier):
+class MyClassifier(classifier.BaseClassifier):
     ...
 
 

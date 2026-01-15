@@ -7,7 +7,7 @@ import classifier
 import utils
 
 
-class RandomClassifier(classifier.Classifier):
+class RandomClassifier(classifier.BaseClassifier):
     def fit(self, data, label, unlabeled_data=None):
         self.rng_ = np.random.default_rng(0)
         self.n_classes_ = data[label].n_unique()

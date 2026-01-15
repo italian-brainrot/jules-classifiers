@@ -12,7 +12,7 @@ import utils
 # inherit from classifier.Classifier, see classifier.py for some examples
 # You can work with polars dataframe directly, or use utils.ToNumpy to convert it to numpy arrays.
 # predict_proba method is optional.
-class RecursiveFeatureHalvingClassifier(classifier.Classifier):
+class RecursiveFeatureHalvingClassifier(classifier.BaseClassifier):
     def __init__(self, max_depth=10, min_samples_leaf=1):
         self.max_depth = max_depth
         self.min_samples_leaf = min_samples_leaf

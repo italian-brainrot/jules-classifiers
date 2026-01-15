@@ -9,7 +9,7 @@ import classifier
 import utils
 
 
-class IncrementalLR(classifier.Classifier):
+class IncrementalLR(classifier.BaseClassifier):
     """wrapper for estimators with sklearn-like APIs"""
     def __init__(self, estimator_fn, maxiter=10, scale=True, impute=True):
         self.estimator_fn = estimator_fn
