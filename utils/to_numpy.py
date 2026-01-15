@@ -1,23 +1,10 @@
-import json
 import warnings
-from collections import defaultdict
-from collections.abc import Callable
-from pathlib import Path
-from typing import TYPE_CHECKING, Any
-
-import matplotlib.colors as mcolors
-import matplotlib.pyplot as plt
 import numpy as np
-import openml
 import polars as pl
-import sklearn.datasets
-from sklearn.base import BaseEstimator, ClassifierMixin
+
 from sklearn.compose import make_column_transformer
 from sklearn.impute import SimpleImputer
-from sklearn.inspection import DecisionBoundaryDisplay
-from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
-from sklearn.model_selection import StratifiedKFold
-from sklearn.pipeline import Pipeline
+
 from sklearn.preprocessing import (
     LabelEncoder,
     MinMaxScaler,

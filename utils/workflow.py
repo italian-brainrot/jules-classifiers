@@ -14,7 +14,7 @@ import polars as pl
 import polars.selectors as cs
 import scipy.sparse
 import sklearn.datasets
-import tqdm
+
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.metrics import (
