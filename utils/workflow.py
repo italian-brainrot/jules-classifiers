@@ -191,7 +191,7 @@ def sanity_check(classifier_fn: "Callable[..., BaseClassifier]"):
     predictor = classifier_fn()
     print(f"Sanity check: fitting {predictor.__class__.__name__} on linearly separable y=argmax(x1, x2)")
     predictor.fit(df_train, "y", unlabeled_data=df_test.drop("y"))
-    print(f'Fitting {df_train.shape} took {(time.perf_counter() - start):.2g} sec.')
+    print(f'Fitting dataset with 100 samples and 2 features took {(time.perf_counter() - start):.2g} sec.')
 
     # Print predictions for inspection
     df_full = pl.concat([

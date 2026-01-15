@@ -102,7 +102,7 @@ class NearestCentroid(BaseClassifier):
         return np.array(self.classes_)[np.argmax(probs, axis=1)]
 
 class LabelPropagation(BaseClassifier):
-    """semi-supervised example a sklearn estimator and unlabeled data"""
+    """Semi-supervised example with a sklearn estimator and unlabeled data"""
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
@@ -130,8 +130,8 @@ class LabelPropagation(BaseClassifier):
         p = self.label_propagation_.predict_proba(X)
         return p
 
-class ImplicitMLP(BaseClassifier):
-    """pytorch example - optimize Solve(Wx+b, y)."""
+class LearnableELM(BaseClassifier):
+    """PyTorch example - Extreme learning machine with learnable first layer via backprop through least squares solver."""
     def __init__(self, adam_steps=500, maxiter=500, nonlinearity=F.tanh):
         self.adam_steps = adam_steps
         self.maxiter = maxiter
@@ -143,9 +143,10 @@ class ImplicitMLP(BaseClassifier):
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         X = torch.as_tensor(X.copy(), device=self.device, dtype=torch.float32)
         y = torch.as_tensor(y.copy(), device=self.device, dtype=torch.long)
-        y_onehot_softmax = F.softmax(F.one_hot(y).float(), 1) # (b, n_classes) # pylint:disable=not-callable
+        y_onehot = F.one_hot(y).float() # (b, n_classes) # pylint:disable=not-callable
         n_samples, n_features = X.shape
-        hidden = min(n_features*4, 512)
+        n_clases = int(y.max() + 1)
+        hidden = min(max(n_features, n_clases), 128) # hidden layer should be small, otherwise ELM overfits
 
         # Initialize weights
         self.W = torch.empty(hidden, n_features, device=self.device, dtype=torch.float32, requires_grad=True)
@@ -154,16 +155,15 @@ class ImplicitMLP(BaseClassifier):
         self.W2 = None
 
         lbfgs = torch.optim.LBFGS([self.W, self.b], line_search_fn='strong_wolfe', max_iter=self.maxiter)
-        adam = torch.optim.Adam([self.W, self.b], 1e-2)
+        adam = torch.optim.Adam([self.W, self.b], 1e-3)
 
         def objective():
             latents = self.nonlinearity(X @ self.W.T + self.b) # (b, hidden)
 
-            # find weight which maps latents to softmaxed targets
-            # we have to softmax targets for lstsq since cross_entropy is applied to logits
-            self.W2 = torch.linalg.lstsq(latents, y_onehot_softmax).solution # pylint:disable=not-callable
+            # find weight which maps latents to targets
+            self.W2 = torch.linalg.lstsq(latents, y_onehot).solution # pylint:disable=not-callable
             y_hat = latents @ self.W2
-            loss = F.cross_entropy(y_hat, y)
+            loss = F.cross_entropy(y_hat, y) # cross_entropy expects logits
             self.W.grad = self.b.grad = None # zero grad
             loss.backward()
             return loss
@@ -182,6 +182,6 @@ class ImplicitMLP(BaseClassifier):
     def predict_proba(self, data):
         X = self.encoder_.transform_X(data)
         X = torch.as_tensor(X, device=self.device, dtype=torch.float32)
-        latents = F.tanh(X @ self.W.T + self.b)
+        latents = self.nonlinearity(X @ self.W.T + self.b)
         y_hat = F.softmax(latents @ self.W2, 1)
         return y_hat.numpy(force=True)
