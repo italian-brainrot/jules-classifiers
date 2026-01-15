@@ -1,1 +1,1 @@
-Workflow for agents to develop classification algorithms.
+Workflow for developing classification algorithms.
