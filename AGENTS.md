@@ -45,7 +45,6 @@ To enable scaling and imputation, use `utils.ToNumpy(scale=True, impute=True)`
 See `classifier.py` for some examples.
 
 ## Workflow
-
 1. Make a copy of `run_template.py`, for example named `run.py`, and implement your estimator there.
 2. Run `python run.py "estimator name"`, where `"estimator name"` is unique name of your estimator for the leaderboard.
 3. Iterate on your algorithm based on benchmark results.
