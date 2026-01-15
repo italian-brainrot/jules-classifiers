@@ -1,0 +1,58 @@
+{
+    "wdbc": {
+        "accuracy": 0.9648443291326909,
+        "balanced_accuracy": 0.9576237086113109,
+        "precision": 0.9753358831028733,
+        "recall": 0.929245283018868,
+        "roc_auc": 0.993259700145557
+    },
+    "diabetes": {
+        "accuracy": 0.75,
+        "balanced_accuracy": 0.7041194029850746,
+        "precision": 0.6726175717001406,
+        "recall": 0.5522388059701493,
+        "roc_auc": 0.8043582089552239
+    },
+    "kc2": {
+        "accuracy": 0.8390804597701149,
+        "balanced_accuracy": 0.6668024778027855,
+        "precision": 0.696969696969697,
+        "recall": 0.3745632424877708,
+        "roc_auc": 0.7642892174811553
+    },
+    "pc1": {
+        "accuracy": 0.9332747910365239,
+        "balanced_accuracy": 0.5918581112889558,
+        "precision": 0.5539772727272727,
+        "recall": 0.19534412955465585,
+        "roc_auc": 0.795967632258942
+    },
+    "tic-tac-toe": {
+        "accuracy": 0.9697286012526096,
+        "balanced_accuracy": 0.9598618114631048,
+        "precision": 0.9627954156490972,
+        "recall": 0.9920127795527156,
+        "roc_auc": 0.9938892951999692
+    },
+    "mnist1d": {
+        "accuracy": 0.65125,
+        "balanced_accuracy": 0.6512340011029094,
+        "precision": 0.6433542991978582,
+        "recall": 0.65125,
+        "roc_auc": 0.928670340974223
+    },
+    "MNIST-subsampled": {
+        "accuracy": 0.832,
+        "balanced_accuracy": 0.8320000000000001,
+        "precision": 0.8363344643466433,
+        "recall": 0.832,
+        "roc_auc": 0.9802377777777778
+    },
+    "iris+useless features": {
+        "accuracy": 0.94,
+        "balanced_accuracy": 0.94,
+        "precision": 0.9434654851321518,
+        "recall": 0.94,
+        "roc_auc": 0.9624000000000001
+    }
+}
